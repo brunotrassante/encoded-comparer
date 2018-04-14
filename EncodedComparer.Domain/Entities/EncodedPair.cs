@@ -32,8 +32,37 @@ namespace EncodedComparer.Domain.Entities
             if (!this.IsValid)
                 return null;
 
-            //TODO: Create algoritm of comparison
-            return new List<DifferenceInfo>();
+            int index = 0;
+            int maxIndexValue = Left.Data.Length;
+            var differences = new List<DifferenceInfo>();
+
+            while (index < maxIndexValue)
+            {
+                int startingIndex = FindNextDifferenceOrLastIndex(ref index, maxIndexValue);
+
+                if (startingIndex == maxIndexValue)
+                    break;
+
+                int upToIndex = FindEndDifferenceIndex(ref index, maxIndexValue);
+
+                differences.Add(new DifferenceInfo(startingIndex, upToIndex - startingIndex));                
+            }
+
+            return differences;
+        }
+
+        private int FindEndDifferenceIndex(ref int startingIndex, int maxIndexValue)
+        {
+            while (startingIndex < maxIndexValue && Left.Data[startingIndex] != Right.Data[startingIndex])
+                startingIndex++;
+            return startingIndex;
+        }
+
+        private int FindNextDifferenceOrLastIndex(ref int startingIndex, int maxIndexValue)
+        {
+            while (startingIndex < maxIndexValue && Left.Data[startingIndex] == Right.Data[startingIndex])
+                startingIndex++;
+            return startingIndex;
         }
 
         public bool AreSameSize => Left?.Data.Length == Right?.Data.Length;
