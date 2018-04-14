@@ -47,16 +47,14 @@ namespace EncodedComparer.Infra.Repositories
 
         public async Task<LeftRightSameIdQuery> GetLeftRightById(int id)
         {
-            // TODO: Ajustar. Query ainda incompleta
             return await _context
             .Connection
             .QueryFirstOrDefaultAsync<LeftRightSameIdQuery>(@"SELECT CASE WHEN l.Id IS NOT NULL THEN l.Id 
-			                                                        ELSE r.Id
-			                                                        END as Id,
-			                                                        l.Base64EncodedData as [Left],
-                                                                    r.Base64EncodedData as [Right]
-                                                                FROM LeftData as l,
-	                                                                 RightData as r
+			                                                                ELSE r.Id
+			                                                                END as Id,
+			                                                                l.Base64EncodedData as [Left], r.Base64EncodedData as [Right]
+                                                                FROM LeftData l FULL OUTER JOIN 
+                                                                     RightData r on r.Id = l.Id
                                                                 WHERE l.Id = @id OR r.Id = @id",
                                              new { Id = id });
         }
