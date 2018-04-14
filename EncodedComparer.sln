@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncodedComparer.Infra", "En
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncodedComparer.Shared", "EncodedComparer.Shared\EncodedComparer.Shared.csproj", "{35468E81-15E4-474C-B696-36D150C34517}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncodedComparer.Tests", "EncodedComparer.Tests\EncodedComparer.Tests.csproj", "{F63C34D2-0A01-4318-9838-857D6D49E382}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncodedComparer.Tests", "EncodedComparer.Tests\EncodedComparer.Tests.csproj", "{F63C34D2-0A01-4318-9838-857D6D49E382}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

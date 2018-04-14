@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using EncodedComparer.Domain.Handlers;
+using EncodedComparer.Domain.Repository;
+using EncodedComparer.Infra.DataContexts;
+using EncodedComparer.Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace EncodedComparer
 {
@@ -20,13 +20,17 @@ namespace EncodedComparer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped(_ => new EncodedComparerContext(Configuration.GetConnectionString("EncodedComparerConnection")));
+            services.AddTransient<IEncodedPairRepository, EncodedPairRepository>();
+            services.AddTransient<EncodedPairHandler, EncodedPairHandler>();
+
             services.AddMvc();
+
+            services.AddSwaggerGen(s => s.SwaggerDoc("v1", new Info { Title = "EncodedComparer", Version = "v1" }));
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -35,6 +39,15 @@ namespace EncodedComparer
             }
 
             app.UseMvc();
+
+            app.UseRewriter(new RewriteOptions().AddRedirect("^$", "swagger"));
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
         }
     }
 }

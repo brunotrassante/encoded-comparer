@@ -10,10 +10,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EncodedComparer.Domain\EncodedComparer.Domain.csproj" />
+    <ProjectReference Include="..\EncodedComparer.Infra\EncodedComparer.Infra.csproj" />
+    <ProjectReference Include="..\EncodedComparer.Shared\EncodedComparer.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -32,7 +32,7 @@ namespace EncodedComparer.Tests.Entities
             mockRepo.Setup(repo => repo.RightExists(AlreadyTakenId)).ReturnsAsync(true);
             mockRepo.Setup(repo => repo.RightExists(NotTakenId)).ReturnsAsync(false);
 
-            mockRepo.Setup(repo => repo.GetLeftRightById(HasOnlyLeftId)).ReturnsAsync(new LeftRightSameIdQuery() { Id = HasOnlyLeftId, Left = SimpleBase64String });
+            mockRepo.Setup(repo => repo.GetLeftRightById(HasOnlyLeftId)).ReturnsAsync(new LeftRightSameIdQuery() { Left = SimpleBase64String });
             mockRepo.Setup(repo => repo.GetLeftRightById(HasOnlyRightId)).ReturnsAsync(new LeftRightSameIdQuery() { Id = HasOnlyRightId, Right = SimpleBase64String });
             mockRepo.Setup(repo => repo.GetLeftRightById(HasEqualsRightAndLeftId)).ReturnsAsync(new LeftRightSameIdQuery() { Id = HasOnlyRightId, Left = SimpleBase64String, Right = SimpleBase64String });
             mockRepo.Setup(repo => repo.GetLeftRightById(HasDiffSizeRightAndLeftId)).ReturnsAsync(new LeftRightSameIdQuery() { Id = HasOnlyRightId, Left = SimpleBase64String, Right = DifferentSizeBase64String });

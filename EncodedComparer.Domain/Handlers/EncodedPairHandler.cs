@@ -65,7 +65,7 @@ namespace EncodedComparer.Domain.Handlers
             var leftRightSameId = await _repository.GetLeftRightById(command.Id);
 
             if (leftRightSameId == null || IsNullOrEmpty(leftRightSameId.Left) || IsNullOrEmpty(leftRightSameId.Right))
-                AddNotification(nameof(command.Id), "There is not a 'left' and a'right' data associated to this ID");
+                AddNotification(nameof(command.Id), "Missing a Left or Right data associated to this ID");
 
             if (!IsValid)
                 return new FindDifferencesResult(false, "Some validation errors occurred. See the notifications list.");
