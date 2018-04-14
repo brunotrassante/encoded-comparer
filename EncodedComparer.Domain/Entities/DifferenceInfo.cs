@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EncodedComparer.Domain
+﻿namespace EncodedComparer.Domain.Entities
 {
     public class DifferenceInfo
     {
