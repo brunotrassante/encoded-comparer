@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
 
 namespace EncodedComparer
 {
@@ -28,7 +30,13 @@ namespace EncodedComparer
 
             services.AddMvc();
 
-            services.AddSwaggerGen(s => s.SwaggerDoc("v1", new Info { Title = "EncodedComparer", Version = "v1" }));
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new Info { Title = "EncodedComparer", Version = "v1" });
+                var basePath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basePath, "EncodedComparer.API.xml");
+                s.IncludeXmlComments(xmlPath);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -47,6 +55,7 @@ namespace EncodedComparer
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+
             });
         }
     }
