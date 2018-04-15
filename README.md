@@ -1,10 +1,12 @@
 # encoded-comparer
 
+Web API to find differences between two provided Base64 inputs.
+
 ## Try it at
 https://encoded-comparer.azurewebsites.net
 
 ## Using the API
-- Documentaition is directly provided by Swagger
+Documentation is directly written in the Swagger landing page.
 
 ## Architecture Patterns and Decisions
 
@@ -36,5 +38,5 @@ In a nutshell:
 - Performance and Load Test
 
 ## Cosidatations: 
-- Some business rules were made up to give the Entities more things to validate, like the max Id lenth and data in Left and Right can oly be inserted once.
-- Since a JSON can start with array, number, string, false, null or true since RFC 7159. I did not tried to validate in the base64 input if the JSON is valid. 
+- Some business rules were made up to give the Entities more things to validate, like the max Id length and the only once data insertion on Left and Right.
+- Since a JSON can start with array, number, string, false, null or true since RFC 7159. I did not try to validate in the base64 input if the JSON is valid. 
