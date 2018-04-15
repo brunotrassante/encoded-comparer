@@ -36,9 +36,9 @@ namespace EncodedComparer
             services.AddSwaggerGen(s =>
             {
                 s.SwaggerDoc("v1", new Info { Title = "EncodedComparer", Version = "v1" });
-                var basePath = AppContext.BaseDirectory;
-                var xmlPath = Path.Combine(basePath, "EncodedComparer.API.xml");
-                s.IncludeXmlComments(xmlPath);
+                //var basePath = AppContext.BaseDirectory;
+                //var xmlPath = Path.Combine(basePath, "EncodedComparer.API.xml");
+                //s.IncludeXmlComments(xmlPath);
             });
         }
 
