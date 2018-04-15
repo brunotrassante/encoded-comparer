@@ -16,13 +16,20 @@ namespace EncodedComparer.Tests.Integration.Entities
     {
         private readonly TestServer _server;
         private readonly HttpClient _client;
-        private const int TwoDifferentDataId = 1000;
-        private const int EmptyId = 1001;
+        private const int TwoDifferentDataId = 9998;
+        private const int EmptyId = 9999;
 
         [TestInitialize]
         public async Task Initialize()
         {
-            await PrepareData();
+            await DeleteTestData();
+            await InsertTestData();
+        }
+
+        [ClassCleanup]
+        public static async Task CleanUp()
+        {
+            await DeleteTestData();
         }
 
         public EncodedComparerApiTests()
@@ -36,7 +43,7 @@ namespace EncodedComparer.Tests.Integration.Entities
             _client = _server.CreateClient();
         }
 
-        private static async Task PrepareData()
+        private static async Task InsertTestData()
         {
             using (var context = new EncodedComparerContext(Startup.ConnectionString))
             {
@@ -44,10 +51,19 @@ namespace EncodedComparer.Tests.Integration.Entities
                 var twoChangesData = new Base64Data(TwoDifferentDataId, "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=");
 
                 var encodedPairRepository = new EncodedPairRepository(context);
-                await encodedPairRepository.DeleteById(TwoDifferentDataId);
-                await encodedPairRepository.DeleteById(EmptyId);
                 await encodedPairRepository.CreateLeft(originalData);
                 await encodedPairRepository.CreateRight(twoChangesData);
+            }
+        }
+
+        private static async Task DeleteTestData()
+        {
+            using (var context = new EncodedComparerContext(Startup.ConnectionString))
+            {
+                var encodedPairRepository = new EncodedPairRepository(context);
+                await encodedPairRepository.DeleteById(TwoDifferentDataId);
+                await encodedPairRepository.DeleteById(EmptyId);
+
             }
         }
 

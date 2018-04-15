@@ -19,7 +19,7 @@ namespace EncodedComparer.Controllers
         /// <summary>
         /// Register a new Left base 64 encoded JSON for future comparison.
         /// </summary>
-        /// <param name="id">Integer number between 1 and 999 used to associate with a Right pair.</param>
+        /// <param name="id">Integer number between 1 and 9999 used to associate with a Right pair.</param>
         /// <remarks>Once Created, it is impossible to update or delete.
         /// Sample request:
         ///
@@ -44,7 +44,7 @@ namespace EncodedComparer.Controllers
         /// <summary>
         /// Register a new Right base 64 encoded JSON for future comparison.
         /// </summary>
-        /// <param name="id">Integer number between 1 and 999 used to associate with a Left pair.</param>
+        /// <param name="id">Integer number between 1 and 9999 used to associate with a Left pair.</param>
         /// <remarks>Once Created, it is impossible to update or delete.
         /// Sample request:
         ///

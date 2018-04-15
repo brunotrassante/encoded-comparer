@@ -36,7 +36,6 @@ namespace EncodedComparer.Tests.Unit.Entities
         private const string FirstCharChangedString       = "aw0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=";
         private const string LastCharChangedString        = "aw0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=";
         private const string AllChangedString             = "9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999";
-        // TODO: More edge cases, like giant json
         
         public EncodedPairHandlerTests()
         {

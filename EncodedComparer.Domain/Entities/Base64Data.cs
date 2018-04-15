@@ -26,7 +26,7 @@ namespace EncodedComparer.Domain.Entities
                 return false;
 
             stringToTest = stringToTest.Trim();
-            return (stringToTest.Length % 4 == 0) && Regex.IsMatch(stringToTest, @"^[a-zA-Z0-9\+/]*={0,3}$");
+            return (stringToTest.Length % 4 == 0) && Regex.IsMatch(stringToTest, @"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
         }
     }
 }
