@@ -1,7 +1,7 @@
 ﻿using EncodedComparer.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EncodedComparer.Tests.Entities
+namespace EncodedComparer.Tests.Unit.Entities
 {
     [TestClass]
     public class Base64DataTests

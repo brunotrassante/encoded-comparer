@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EncodedComparer.Tests.Entities
+namespace EncodedComparer.Tests.Unit.Entities
 {
     [TestClass]
     public class EncodedPairHandlerTests

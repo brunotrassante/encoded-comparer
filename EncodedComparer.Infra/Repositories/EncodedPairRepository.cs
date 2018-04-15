@@ -78,5 +78,21 @@ namespace EncodedComparer.Infra.Repositories
                                                 WHERE Id = @id",
                                                 new { Id = id });
         }
+        public async Task DeleteAll()
+        {
+            await _context
+             .Connection
+             .ExecuteAsync(@"DELETE FROM LeftData
+                             DELETE FROM RightData");
+        }
+
+        public async Task DeleteById(int id)
+        {
+            await _context
+             .Connection
+             .ExecuteAsync(@"DELETE FROM LeftData WHERE Id = @id
+                             DELETE FROM RightData WHERE Id = @id",
+                             new { Id = id });
+        }
     }
 }

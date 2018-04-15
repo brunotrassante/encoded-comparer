@@ -15,6 +15,8 @@ namespace EncodedComparer
 {
     public class Startup
     {
+        public static string ConnectionString { get; private set; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,7 +26,8 @@ namespace EncodedComparer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(_ => new EncodedComparerContext(Configuration.GetConnectionString("EncodedComparerConnection")));
+            ConnectionString = Configuration.GetConnectionString("EncodedComparerConnection");
+            services.AddScoped(_ => new EncodedComparerContext(ConnectionString));
             services.AddTransient<IEncodedPairRepository, EncodedPairRepository>();
             services.AddTransient<EncodedPairHandler, EncodedPairHandler>();
 
