@@ -14,5 +14,6 @@ namespace EncodedComparer.Domain.Repository
         Task CreateLeft(Base64Data encodedData);
         Task CreateRight(Base64Data encodedData);
         Task<LeftRightSameIdQuery> GetLeftRightById(int id);
+        Task DeleteById(int id);
     }
 }

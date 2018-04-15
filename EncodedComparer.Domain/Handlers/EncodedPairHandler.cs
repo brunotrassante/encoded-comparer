@@ -14,7 +14,8 @@ namespace EncodedComparer.Domain.Handlers
         Notifiable,
         ICommandHandler<SetLeftCommand>,
         ICommandHandler<SetRightCommand>,
-        ICommandHandler<FindDifferencesCommand>
+        ICommandHandler<FindDifferencesCommand>,
+        ICommandHandler<DeleteByIdCommand>
     {
         private const string GenericValidationErrorMessa = "Some validation errors occurred. See the notifications list.";
         private IEncodedPairRepository _repository;
@@ -63,7 +64,7 @@ namespace EncodedComparer.Domain.Handlers
             var leftRightPair = await _repository.GetLeftRightById(command.Id);
 
             if (leftRightPair == null || IsNullOrEmpty(leftRightPair.Left) || IsNullOrEmpty(leftRightPair.Right))
-                AddNotification(nameof(command.Id), "Missing a Left or Right data associated to this ID");
+                AddNotification(nameof(command.Id), "Missing Left or Right data associated to this ID");
 
             if (!IsValid)
                 return new FindDifferencesResult(false, "Some validation errors occurred. See the notifications list.");
@@ -78,6 +79,12 @@ namespace EncodedComparer.Domain.Handlers
 
             var differences = encodedPair.FindDifferences();
             return new FindDifferencesResult(true, "Left and Right are same size but have differences. See the differences list.", differences);
+        }
+
+        public async Task<ICommandResult> Handle(DeleteByIdCommand command)
+        {
+            await _repository.DeleteById(command.Id);
+            return new SimpleResult(true, $"Left and Right of Id {command.Id} were successfuly deleted.");
         }
     }
 }

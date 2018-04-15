@@ -1,6 +1,7 @@
 ﻿using EncodedComparer.API.Controllers;
 using EncodedComparer.Domain.Commands;
 using EncodedComparer.Domain.Handlers;
+using EncodedComparer.Domain.Queries;
 using EncodedComparer.Domain.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace EncodedComparer.Controllers
     public class EncodedPairController : BaseController
     {
         private EncodedPairHandler _handler;
+        private IEncodedPairRepository _repository;
 
-        public EncodedPairController(EncodedPairHandler handler)
+        public EncodedPairController(EncodedPairHandler handler, IEncodedPairRepository repository)
         {
             _handler = handler;
+            _repository = repository;
         }
 
         /// <summary>
@@ -25,7 +28,7 @@ namespace EncodedComparer.Controllers
         ///
         ///   POST /v1/diff/1/left
         ///   {
-        ///     "base64EncodedData": "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0"
+        ///     "base64EncodedData": "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0="
         ///   }
         /// </remarks>
         /// <response code="200">Data added on the provided Id Left. Can never be changed.</response>
@@ -34,7 +37,7 @@ namespace EncodedComparer.Controllers
         [HttpPost]
         [Produces("application/json")]
         [Route("v1/diff/{id}/left")]
-        public async Task<ActionResult> Get(int id, [FromBody]SetLeftCommand command)
+        public async Task<ActionResult> SetLeft(int id, [FromBody]SetLeftCommand command)
         {
             command.Id = id;
             var commandResult = await _handler.Handle(command);
@@ -50,7 +53,7 @@ namespace EncodedComparer.Controllers
         ///
         ///   POST /v1/diff/1/right
         ///   {
-        ///     "base64EncodedData": "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0"
+        ///     "base64EncodedData": "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0="
         ///   }
         /// </remarks>
         /// <response code="200">Data added on the provided Id Right. Can never be changed.</response>
@@ -58,7 +61,7 @@ namespace EncodedComparer.Controllers
         /// <response code="500">Totaly unexpected error.</response>
         [HttpPost]
         [Route("v1/diff/{id}/right")]
-        public async Task<ActionResult> Get(int id, [FromBody]SetRightCommand command)
+        public async Task<ActionResult> SetRight(int id, [FromBody]SetRightCommand command)
         {
             command.Id = id;
             var commandResult = await _handler.Handle(command);
@@ -101,6 +104,43 @@ namespace EncodedComparer.Controllers
             var commandResult = await _handler.Handle(command);
             return ResponseBuilder(commandResult.Data, commandResult.Success, commandResult.Message, _handler.Notifications);
 
+        }
+
+        /// <summary>
+        /// Get Left and Right of an Id. 
+        /// </summary>
+        /// <remarks>No validations are made.</remarks>
+        /// <param name="id">Id to search for Left and Right.</param>
+        /// <response code="200">Left and Right from Id.</response>
+        /// <response code="500">Totaly unexpected error.</response>
+        [HttpGet]
+        [Produces("application/json")]
+        [Route("v1/diff/{id}/visualize")]
+        public async Task<LeftRightSameIdQuery> GetWithoutComparing(int id)
+        {
+            var pair = await _repository.GetLeftRightById(id);
+
+            if (pair == null)
+                pair = new LeftRightSameIdQuery() { Id = id };
+
+            return pair;
+        }
+
+        /// <summary>
+        /// Delete Left and Right by Id.
+        /// </summary>
+        /// <remarks>No validations are made. If the Id does not exists, there will be no effect.</remarks>
+        /// <param name="id">Id to have its Left and Right deleted.</param>
+        /// <response code="200">Garanteed this Id has no more Left or Right.</response>
+        /// <response code="500">Totaly unexpected error.</response>
+        [HttpDelete]
+        [Produces("application/json")]
+        [Route("v1/diff/{id}")]
+        public async Task<ActionResult> DeleteById(int id)
+        {
+            var command = new DeleteByIdCommand() { Id = id };
+            var commandResult = await _handler.Handle(command);
+            return ResponseBuilder(commandResult.Data, commandResult.Success, commandResult.Message, _handler.Notifications);
         }
     }
 }
