@@ -78,7 +78,7 @@ namespace EncodedComparer.Domain.Handlers
                 return new FindDifferencesResult(true, "Left and Right are exactly the same.");
 
             var differences = encodedPair.FindDifferences();
-            return new FindDifferencesResult(true, "Left and Right are same size but have differences. See the differences list.", differences);
+            return new FindDifferencesResult(true, "Same size but have differences. See the differences list.", differences);
         }
 
         public async Task<ICommandResult> Handle(DeleteByIdCommand command)

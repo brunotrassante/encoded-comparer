@@ -73,14 +73,14 @@ namespace EncodedComparer.Tests.Integration.Entities
             var jsonResult = await _client.GetAsync($"/v1/diff/{TwoDifferentDataId}");
             jsonResult.EnsureSuccessStatusCode();
             var responseString = await jsonResult.Content.ReadAsStringAsync();
-            string expectedResult = "{\"success\":true,\"message\":\"Left and Right are same size but have differences. See the differences list.\",\"data\":[{\"startingIndex\":15,\"length\":5},{\"startingIndex\":74,\"length\":1}],\"notifications\":[]}";
+            string expectedResult = "{\"success\":true,\"message\":\"Same size but have differences. See the differences list.\",\"data\":[{\"startingIndex\":15,\"length\":5},{\"startingIndex\":74,\"length\":1}],\"notifications\":[]}";
 
             Assert.IsTrue(jsonResult.IsSuccessStatusCode);
             Assert.AreEqual(expectedResult, responseString);
         }
 
         [TestMethod]
-        public async Task ShouldAddLeftDataOAnAvaliableId()
+        public async Task ShouldAddLeftDataWhenIdIsAvaliable()
         {
             string jsonInString = "{\"base64EncodedData\": \"ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=\"}";
             var jsonResult = await _client.PostAsync($"/v1/diff/{EmptyId}/left", new StringContent(jsonInString, Encoding.UTF8, "application/json"));
@@ -93,7 +93,7 @@ namespace EncodedComparer.Tests.Integration.Entities
         }
 
         [TestMethod]
-        public async Task ShouldAddRightDataOAnAvaliableId()
+        public async Task ShouldAddRightDataWhenIdIsAvaliable()
         {
             string jsonInString = "{\"base64EncodedData\": \"ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=\"}";
             var jsonResult = await _client.PostAsync($"/v1/diff/{EmptyId}/right", new StringContent(jsonInString, Encoding.UTF8, "application/json"));
@@ -103,6 +103,28 @@ namespace EncodedComparer.Tests.Integration.Entities
             string expectedResult = "{\"success\":true,\"message\":\"Right data was successfully added.\",\"data\":null,\"notifications\":[]}";
             Assert.IsTrue(jsonResult.IsSuccessStatusCode);
             Assert.AreEqual(expectedResult, responseString);
+        }
+
+        [TestMethod]
+        public async Task ShouldVisualizeDataWhenAnyIdIsProvided()
+        {
+            var jsonResult = await _client.GetAsync($"/v1/diff/{TwoDifferentDataId}/visualize");
+            jsonResult.EnsureSuccessStatusCode();
+            var responseString = await jsonResult.Content.ReadAsStringAsync();
+            string expectedResult = "{\"id\":9998,\"left\":\"ew0KIm5hbWUiOiJNYXJ5IiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIk5pYXQiIF0NCn0=\",\"right\":\"ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=\"}";
+
+            Assert.IsTrue(jsonResult.IsSuccessStatusCode);
+            Assert.AreEqual(expectedResult, responseString);
+        }
+
+        [TestMethod]
+        public async Task ShouldDeleteLeftAndRightWhenIdIsProvided()
+        {
+            var jsonResult = await _client.DeleteAsync($"/v1/diff/{TwoDifferentDataId}");
+            jsonResult.EnsureSuccessStatusCode();
+            var responseString = await jsonResult.Content.ReadAsStringAsync();
+
+            Assert.IsTrue(jsonResult.IsSuccessStatusCode);
         }
     }
 }
