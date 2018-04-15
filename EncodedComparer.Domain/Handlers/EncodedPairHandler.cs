@@ -60,17 +60,15 @@ namespace EncodedComparer.Domain.Handlers
 
         public async Task<ICommandResult> Handle(FindDifferencesCommand command)
         {
-            // TODO: Validar entradas
+            var leftRightPair = await _repository.GetLeftRightById(command.Id);
 
-            var leftRightSameId = await _repository.GetLeftRightById(command.Id);
-
-            if (leftRightSameId == null || IsNullOrEmpty(leftRightSameId.Left) || IsNullOrEmpty(leftRightSameId.Right))
+            if (leftRightPair == null || IsNullOrEmpty(leftRightPair.Left) || IsNullOrEmpty(leftRightPair.Right))
                 AddNotification(nameof(command.Id), "Missing a Left or Right data associated to this ID");
 
             if (!IsValid)
                 return new FindDifferencesResult(false, "Some validation errors occurred. See the notifications list.");
 
-            var encodedPair = new EncodedPair(new Base64Data(leftRightSameId.Id, leftRightSameId.Left), new Base64Data(leftRightSameId.Id, leftRightSameId.Right));
+            var encodedPair = new EncodedPair(new Base64Data(leftRightPair.Id, leftRightPair.Left), new Base64Data(leftRightPair.Id, leftRightPair.Right));
 
             if (!encodedPair.AreSameSize)
                 return new FindDifferencesResult(true, "Left and Right are not same size.");

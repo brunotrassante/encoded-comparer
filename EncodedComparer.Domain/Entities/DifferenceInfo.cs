@@ -7,9 +7,8 @@
 
         public DifferenceInfo(int startingIndex, int length)
         {
-            //TODO: Validations
             StartingIndex = startingIndex;
-            Length = Length;
+            Length = length;
         }
 
         public override string ToString() => $"Difference found starting at index{StartingIndex} up to {StartingIndex + Length} ({Length} characters).";
