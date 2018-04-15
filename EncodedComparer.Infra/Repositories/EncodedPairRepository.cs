@@ -1,10 +1,9 @@
-﻿using EncodedComparer.Domain.Repository;
-using EncodedComparer.Infra.DataContexts;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using Dapper;
 using EncodedComparer.Domain.Entities;
 using EncodedComparer.Domain.Queries;
-using Dapper;
+using EncodedComparer.Domain.Repository;
+using EncodedComparer.Infra.DataContexts;
+using System.Threading.Tasks;
 
 namespace EncodedComparer.Infra.Repositories
 {
@@ -77,13 +76,6 @@ namespace EncodedComparer.Infra.Repositories
                                                 FROM RightData 
                                                 WHERE Id = @id",
                                                 new { Id = id });
-        }
-        public async Task DeleteAll()
-        {
-            await _context
-             .Connection
-             .ExecuteAsync(@"DELETE FROM LeftData
-                             DELETE FROM RightData");
         }
 
         public async Task DeleteById(int id)

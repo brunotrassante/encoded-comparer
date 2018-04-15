@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EncodedComparer.Domain.Queries
+﻿namespace EncodedComparer.Domain.Queries
 {
     public class LeftRightSameIdQuery
     {

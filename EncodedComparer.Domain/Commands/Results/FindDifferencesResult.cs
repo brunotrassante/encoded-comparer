@@ -1,6 +1,5 @@
 ﻿using EncodedComparer.Domain.Entities;
 using EncodedComparer.Shared.Commands;
-using EncodedComparer.Shared.Notifications;
 using System.Collections.Generic;
 
 namespace EncodedComparer.Domain.Commands.Results
@@ -19,7 +18,6 @@ namespace EncodedComparer.Domain.Commands.Results
             Message = message;
             Data = null;
         }
-
 
         public bool Success { get; set; }
         public string Message { get; set; }

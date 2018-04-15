@@ -1,9 +1,4 @@
-﻿using EncodedComparer.Shared.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EncodedComparer.Shared.Commands
+﻿namespace EncodedComparer.Shared.Commands
 {
     public interface ICommandResult
     {

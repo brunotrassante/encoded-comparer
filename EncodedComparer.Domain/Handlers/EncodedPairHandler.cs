@@ -4,7 +4,6 @@ using EncodedComparer.Domain.Entities;
 using EncodedComparer.Domain.Repository;
 using EncodedComparer.Shared.Commands;
 using EncodedComparer.Shared.Notifications;
-using System.Linq;
 using System.Threading.Tasks;
 using static System.String;
 

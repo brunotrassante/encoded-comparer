@@ -1,5 +1,6 @@
 ﻿using EncodedComparer.Shared.Notifications;
-using System.Text.RegularExpressions;
+using static System.String;
+using static System.Text.RegularExpressions.Regex;
 
 namespace EncodedComparer.Domain.Entities
 {
@@ -22,11 +23,11 @@ namespace EncodedComparer.Domain.Entities
 
         private bool IsBase64(string stringToTest)
         {
-            if (string.IsNullOrEmpty(stringToTest))
+            if (IsNullOrEmpty(stringToTest))
                 return false;
 
             stringToTest = stringToTest.Trim();
-            return (stringToTest.Length % 4 == 0) && Regex.IsMatch(stringToTest, @"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
+            return (stringToTest.Length % 4 == 0) && IsMatch(stringToTest, @"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$");
         }
     }
 }

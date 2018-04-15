@@ -1,8 +1,5 @@
 ﻿using EncodedComparer.Domain.Entities;
 using EncodedComparer.Domain.Queries;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EncodedComparer.Domain.Repository

@@ -23,7 +23,7 @@ namespace EncodedComparer.Controllers
         /// Register a new Left base 64 encoded JSON for future comparison.
         /// </summary>
         /// <param name="id">Integer number between 1 and 9999 used to associate with a Right pair.</param>
-        /// <remarks>Once Created, it is impossible to update or delete.
+        /// <remarks>Once Created, it is impossible to update.
         /// Sample request:
         ///
         ///   POST /v1/diff/1/left
@@ -33,7 +33,7 @@ namespace EncodedComparer.Controllers
         /// </remarks>
         /// <response code="200">Data added on the provided Id Left. Can never be changed.</response>
         /// <response code="400">May happend if the Id is already in use or the base64 input not valid.</response>
-        /// <response code="500">Totaly unexpected error.</response>
+        /// <response code="500">Totally unexpected error.</response>
         [HttpPost]
         [Produces("application/json")]
         [Route("v1/diff/{id}/left")]
@@ -48,7 +48,7 @@ namespace EncodedComparer.Controllers
         /// Register a new Right base 64 encoded JSON for future comparison.
         /// </summary>
         /// <param name="id">Integer number between 1 and 9999 used to associate with a Left pair.</param>
-        /// <remarks>Once Created, it is impossible to update or delete.
+        /// <remarks>Once Created, it is impossible to update.
         /// Sample request:
         ///
         ///   POST /v1/diff/1/right
@@ -58,7 +58,7 @@ namespace EncodedComparer.Controllers
         /// </remarks>
         /// <response code="200">Data added on the provided Id Right. Can never be changed.</response>
         /// <response code="400">May happend if the Id is already in use or the base64 input not valid.</response>
-        /// <response code="500">Totaly unexpected error.</response>
+        /// <response code="500">Totally unexpected error.</response>
         [HttpPost]
         [Route("v1/diff/{id}/right")]
         public async Task<ActionResult> SetRight(int id, [FromBody]SetRightCommand command)
@@ -69,7 +69,7 @@ namespace EncodedComparer.Controllers
         }
 
         /// <summary>
-        /// Compare the Left and Right of an Id. If they have same size but are not equal, there will be a list of diff offsets and lenghts.
+        /// Compare the Left and Right of an Id. If they have same size but are not equal, there will be a list of in which index each difference begins and its length.
         /// </summary>
         /// <param name="id">Integer that has a Left and Right base64 data associated with it.</param>
         /// <remarks>The return is standardized. It will always provide: success, message, data and notifications.
@@ -93,8 +93,8 @@ namespace EncodedComparer.Controllers
         ///}
         /// </remarks>
         /// <response code="200">Data added on the provided Id Right. Can never be changed.</response>
-        /// <response code="400">If the Id does not have data on Left and Right</response>
-        /// <response code="500">Totaly unexpected error.</response>
+        /// <response code="400">If the Id does not have data on Left and Right.</response>
+        /// <response code="500">Totally unexpected error.</response>
         [HttpGet]
         [Produces("application/json")]
         [Route("v1/diff/{id}")]
@@ -112,7 +112,7 @@ namespace EncodedComparer.Controllers
         /// <remarks>No validations are made.</remarks>
         /// <param name="id">Id to search for Left and Right.</param>
         /// <response code="200">Left and Right from Id.</response>
-        /// <response code="500">Totaly unexpected error.</response>
+        /// <response code="500">Totally unexpected error.</response>
         [HttpGet]
         [Produces("application/json")]
         [Route("v1/diff/{id}/visualize")]
@@ -132,7 +132,7 @@ namespace EncodedComparer.Controllers
         /// <remarks>No validations are made. If the Id does not exists, there will be no effect.</remarks>
         /// <param name="id">Id to have its Left and Right deleted.</param>
         /// <response code="200">Garanteed this Id has no more Left or Right.</response>
-        /// <response code="500">Totaly unexpected error.</response>
+        /// <response code="500">Totally unexpected error.</response>
         [HttpDelete]
         [Produces("application/json")]
         [Route("v1/diff/{id}")]

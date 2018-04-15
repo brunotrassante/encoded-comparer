@@ -1,9 +1,6 @@
 ﻿using EncodedComparer.Shared.Notifications;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EncodedComparer.API.Controllers
 {
@@ -18,7 +15,7 @@ namespace EncodedComparer.API.Controllers
                 if (!success)
                     return BadRequest(responseObject);
                 else
-                    return Ok(responseObject);
+                    return Ok(responseObject);                
             }
             catch
             {

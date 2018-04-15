@@ -20,6 +20,46 @@ namespace EncodedComparer.Tests.Unit.Entities
 
 
         [TestMethod]
+        public void ShouldReturnNotificationWhenInstatiatedWithAnyNull()
+        {
+            var encodedPairNullNull = new EncodedPair(null, null);
+            var encodedPairNullOk = new EncodedPair(null, _validBase64Data);
+            var encodedPairOkNull = new EncodedPair(_validBase64Data, null);
+
+            Assert.IsFalse(encodedPairNullNull.IsValid);
+            Assert.AreEqual(1, encodedPairNullNull.Notifications.Count);
+
+            Assert.IsFalse(encodedPairNullOk.IsValid);
+            Assert.AreEqual(1, encodedPairNullOk.Notifications.Count);
+
+            Assert.IsFalse(encodedPairOkNull.IsValid);
+            Assert.AreEqual(1, encodedPairOkNull.Notifications.Count);
+        }
+
+        [TestMethod]
+        public void ShouldReturnNotificationWhenFindingDiffWithNullOnLeftOrRight()
+        {
+            var encodedPairNullNull = new EncodedPair(null, null);
+            var differences = encodedPairNullNull.FindDifferences();
+          
+            Assert.IsFalse(encodedPairNullNull.IsValid);
+            Assert.AreEqual(3, encodedPairNullNull.Notifications.Count);
+            Assert.IsNull(differences);
+        }
+
+        [TestMethod]
+        public void ShouldReturnNotificationWhenFindingDiffWithDifferemtSizedLeftAndRight()
+        {
+            var encodedPairNullNull = new EncodedPair(_validBase64Data, _smallerValidBase64Data);
+            var differences = encodedPairNullNull.FindDifferences();
+
+            Assert.IsFalse(encodedPairNullNull.IsValid);
+            Assert.AreEqual(1, encodedPairNullNull.Notifications.Count);
+            Assert.IsNull(differences);
+        }
+
+
+        [TestMethod]
         public void ShouldReturnFalseWhenLeftAndRigthAreNotSameSize()
         {
             var encodedPair = new EncodedPair(_validBase64Data, _smallerValidBase64Data);
