@@ -6,20 +6,45 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace EncodedComparer.Tests.Integration.Entities
 {
     [TestClass]
     public class EncodedComparerApiTests
     {
+        private const string DataBaseFilePath = "Database/EncodedComparer.sqlite";
+        private readonly string SqliteConnectionString = $"Data Source = {DataBaseFilePath};";
         private readonly TestServer _server;
         private readonly HttpClient _client;
         private const int TwoDifferentDataId = 9998;
         private const int EmptyId = 9999;
+
+        private void CreateDatabase()
+        {
+            File.Create(DataBaseFilePath).Close();
+
+            using (var connection = new SqliteConnection(SqliteConnectionString))
+            {
+                string query = @"CREATE TABLE [RightData](
+                                [Id][int] PRIMARY KEY  NOT NULL,
+                                [Base64EncodedData] TEXT NOT NULL);
+
+                               CREATE TABLE [LeftData](
+	                            [Id] [int] PRIMARY KEY  NOT NULL,
+	                            [Base64EncodedData] TEXT NOT NULL)";
+
+                connection.Open();
+
+                SqliteCommand cmd = connection.CreateCommand();
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+            }
+        }
 
         [TestInitialize]
         public async Task Initialize()
@@ -44,6 +69,9 @@ namespace EncodedComparer.Tests.Integration.Entities
                        .UseEnvironment("IntegrationTesting")
                    .UseStartup<Startup>());
             _client = _server.CreateClient();
+
+            if (!File.Exists(DataBaseFilePath))
+                CreateDatabase();
         }
 
         private static async Task InsertTestData()
