@@ -28,4 +28,10 @@
     <ProjectReference Include="..\EncodedComparer.Shared\EncodedComparer.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Database\EncodedComparer.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

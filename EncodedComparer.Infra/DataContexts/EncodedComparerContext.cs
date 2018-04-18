@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace EncodedComparer.Infra.DataContexts
 {
     public class EncodedComparerContext : IDisposable
     {
-        public SqlConnection Connection { get; private set; }
+        public DbConnection Connection { get; private set; }
 
-        public EncodedComparerContext(string connectionString)
+        public EncodedComparerContext(DbConnection connection)
         {
-            Connection = new SqlConnection(connectionString);
+            Connection = connection;
             Connection.Open();
         }
 

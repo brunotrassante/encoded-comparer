@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
+using System.Data.Common;
+using System.Data.SQLite;
+using System.Data.SqlClient;
 
 namespace EncodedComparer
 {
@@ -17,17 +20,31 @@ namespace EncodedComparer
     {
         public static string ConnectionString { get; private set; }
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            HostingEnvironment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IHostingEnvironment HostingEnvironment { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             ConnectionString = Configuration.GetConnectionString("EncodedComparerConnection");
-            services.AddScoped(_ => new EncodedComparerContext(ConnectionString));
+            DbConnection dbConnection;
+
+            if (HostingEnvironment.IsEnvironment("IntegrationTesting"))
+            {
+                dbConnection = new SQLiteConnection(ConnectionString);
+            }
+            else
+            {
+                dbConnection =  new SqlConnection(ConnectionString);
+            }
+
+            ConnectionString = Configuration.GetConnectionString("EncodedComparerConnection");
+            services.AddScoped(_ => new EncodedComparerContext(dbConnection));
             services.AddTransient<IEncodedPairRepository, EncodedPairRepository>();
             services.AddTransient<EncodedPairHandler, EncodedPairHandler>();
 

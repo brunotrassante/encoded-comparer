@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Data.SQLite;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,13 +40,14 @@ namespace EncodedComparer.Tests.Integration.Entities
                    .UseConfiguration(new ConfigurationBuilder()
                        .AddJsonFile("appsettings.json")
                        .Build())
+                       .UseEnvironment("IntegrationTesting")
                    .UseStartup<Startup>());
             _client = _server.CreateClient();
         }
 
         private static async Task InsertTestData()
         {
-            using (var context = new EncodedComparerContext(Startup.ConnectionString))
+            using (var context = new EncodedComparerContext(new SQLiteConnection(Startup.ConnectionString)))
             {
                 var originalData = new Base64Data(TwoDifferentDataId, "ew0KIm5hbWUiOiJNYXJ5IiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIk5pYXQiIF0NCn0=");
                 var twoChangesData = new Base64Data(TwoDifferentDataId, "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=");
@@ -58,12 +60,11 @@ namespace EncodedComparer.Tests.Integration.Entities
 
         private static async Task DeleteTestData()
         {
-            using (var context = new EncodedComparerContext(Startup.ConnectionString))
+            using (var context = new EncodedComparerContext(new SQLiteConnection(Startup.ConnectionString)))
             {
                 var encodedPairRepository = new EncodedPairRepository(context);
                 await encodedPairRepository.DeleteById(TwoDifferentDataId);
                 await encodedPairRepository.DeleteById(EmptyId);
-
             }
         }
 

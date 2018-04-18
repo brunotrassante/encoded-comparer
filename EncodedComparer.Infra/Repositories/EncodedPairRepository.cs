@@ -48,13 +48,15 @@ namespace EncodedComparer.Infra.Repositories
         {
             return await _context
             .Connection
-            .QueryFirstOrDefaultAsync<LeftRightSameIdQuery>(@"SELECT CASE WHEN l.Id IS NOT NULL THEN l.Id 
-			                                                                ELSE r.Id
-			                                                                END as Id,
-			                                                                l.Base64EncodedData as [Left], r.Base64EncodedData as [Right]
-                                                                FROM LeftData l FULL OUTER JOIN 
-                                                                     RightData r on r.Id = l.Id
-                                                                WHERE l.Id = @id OR r.Id = @id",
+            .QueryFirstOrDefaultAsync<LeftRightSameIdQuery>(@"SELECT l.Id, l.Base64EncodedData as [Left], r.Base64EncodedData as [Right]
+                                                                FROM LeftData l 
+                                                                    LEFT JOIN RightData r on r.Id = l.Id
+                                                                WHERE l.Id = @id
+                                                                UNION
+                                                                SELECT r.Id, l.Base64EncodedData as [Left], r.Base64EncodedData as [Right]
+                                                                FROM RightData r  
+                                                                    LEFT JOIN LeftData l on r.Id = l.Id
+                                                                WHERE r.Id = @id",
                                              new { Id = id });
         }
 
@@ -82,8 +84,8 @@ namespace EncodedComparer.Infra.Repositories
         {
             await _context
              .Connection
-             .ExecuteAsync(@"DELETE FROM LeftData WHERE Id = @id
-                             DELETE FROM RightData WHERE Id = @id",
+             .ExecuteAsync(@"DELETE FROM LeftData WHERE Id = @id;
+                             DELETE FROM RightData WHERE Id = @id;",
                              new { Id = id });
         }
     }
