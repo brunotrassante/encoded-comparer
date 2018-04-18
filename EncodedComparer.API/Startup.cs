@@ -5,14 +5,14 @@ using EncodedComparer.Infra.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
-using System.IO;
 using System.Data.Common;
-using System.Data.SQLite;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace EncodedComparer
 {
@@ -36,7 +36,7 @@ namespace EncodedComparer
 
             if (HostingEnvironment.IsEnvironment("IntegrationTesting"))
             {
-                dbConnection = new SQLiteConnection(ConnectionString);
+                dbConnection = new SqliteConnection(ConnectionString);
             }
             else
             {

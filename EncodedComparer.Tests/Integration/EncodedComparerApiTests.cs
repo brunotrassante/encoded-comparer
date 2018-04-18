@@ -3,9 +3,10 @@ using EncodedComparer.Infra.DataContexts;
 using EncodedComparer.Infra.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Data.SQLite;
+
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace EncodedComparer.Tests.Integration.Entities
 
         private static async Task InsertTestData()
         {
-            using (var context = new EncodedComparerContext(new SQLiteConnection(Startup.ConnectionString)))
+            using (var context = new EncodedComparerContext(new SqliteConnection(Startup.ConnectionString)))
             {
                 var originalData = new Base64Data(TwoDifferentDataId, "ew0KIm5hbWUiOiJNYXJ5IiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIk5pYXQiIF0NCn0=");
                 var twoChangesData = new Base64Data(TwoDifferentDataId, "ew0KIm5hbWUiOiJKb2huIiwNCiJhZ2UiOjMwLA0KImNhcnMiOlsgIkZvcmQiLCAiQk1XIiwgIkZpYXQiIF0NCn0=");
@@ -60,7 +61,7 @@ namespace EncodedComparer.Tests.Integration.Entities
 
         private static async Task DeleteTestData()
         {
-            using (var context = new EncodedComparerContext(new SQLiteConnection(Startup.ConnectionString)))
+            using (var context = new EncodedComparerContext(new SqliteConnection(Startup.ConnectionString)))
             {
                 var encodedPairRepository = new EncodedPairRepository(context);
                 await encodedPairRepository.DeleteById(TwoDifferentDataId);

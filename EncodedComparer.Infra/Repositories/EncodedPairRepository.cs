@@ -22,11 +22,11 @@ namespace EncodedComparer.Infra.Repositories
                  .Connection
                  .ExecuteAsync(@"INSERT INTO LeftData 
                                 (Id, Base64EncodedData)
-                                VALUES (@Id,@Data)",
+                                VALUES (@id,@data)",
                 new
                 {
-                    Id = encodedData.Id,
-                    Data = encodedData.Data
+                    id = encodedData.Id,
+                    data = encodedData.Data
                 });
         }
 
@@ -36,11 +36,11 @@ namespace EncodedComparer.Infra.Repositories
                  .Connection
                  .ExecuteAsync(@"INSERT INTO RightData 
                                 (Id, Base64EncodedData)
-                                VALUES (@Id,@Data)",
+                                VALUES (@id,@data)",
                 new
                 {
-                    Id = encodedData.Id,
-                    Data = encodedData.Data
+                    id = encodedData.Id,
+                    data = encodedData.Data
                 });
         }
 
@@ -57,7 +57,7 @@ namespace EncodedComparer.Infra.Repositories
                                                                 FROM RightData r  
                                                                     LEFT JOIN LeftData l on r.Id = l.Id
                                                                 WHERE r.Id = @id",
-                                             new { Id = id });
+                                             new { id = id });
         }
 
         public async Task<bool> LeftExists(int id)
@@ -67,7 +67,7 @@ namespace EncodedComparer.Infra.Repositories
                .QueryFirstOrDefaultAsync<bool>(@"SELECT CAST(COUNT(1) AS bit) 
                                                 FROM LeftData 
                                                 WHERE Id = @id",
-                                                new { Id = id });
+                                                new { id = id });
         }
 
         public async Task<bool> RightExists(int id)
@@ -77,7 +77,7 @@ namespace EncodedComparer.Infra.Repositories
               .QueryFirstOrDefaultAsync<bool>(@"SELECT CAST(COUNT(1) AS bit) 
                                                 FROM RightData 
                                                 WHERE Id = @id",
-                                                new { Id = id });
+                                                new { id = id });
         }
 
         public async Task DeleteById(int id)
@@ -86,7 +86,7 @@ namespace EncodedComparer.Infra.Repositories
              .Connection
              .ExecuteAsync(@"DELETE FROM LeftData WHERE Id = @id;
                              DELETE FROM RightData WHERE Id = @id;",
-                             new { Id = id });
+                             new { id = id });
         }
     }
 }
