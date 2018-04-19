@@ -8,6 +8,18 @@ https://encoded-comparer.azurewebsites.net
 ## Using the API
 Documentation is directly written in the Swagger landing page.
 
+## Prerequisites
+ - [Dotnet Core](https://www.microsoft.com/net/learn/get-started/)
+
+## Running Tests
+The solution uses an embedded SQLite for the integration tests. So, everyting should run smoothly just after cloning.
+
+## Running Locally 
+For real envirement run, the aplication expects an avaliable SQL Server instance with all tables setted up.
+To set up a new database you need to:
+- Run the full criation script into your SQLServer database. This script is located in encoded-comparer\EncodedComparer.Infra\Scripts\EncodedComparer.sql
+- Set your database connection string in the appsettings.json file, located in encoded-comparer\EncodedComparer.API
+
 ## Architecture Patterns and Decisions
 
 The Architecture proposed tries to map the problem and business rules to rich entity classes that protects the manipulation of its proporties from external elements. Making sure you can't avoid passing throught every required rule before persisting your data.
